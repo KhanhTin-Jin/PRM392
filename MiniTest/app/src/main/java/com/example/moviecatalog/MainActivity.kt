@@ -2,10 +2,10 @@ package com.example.moviecatalog
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalog.data.MovieRepository
 import com.example.moviecatalog.databinding.ActivityMainBinding
 import com.example.moviecatalog.ui.MovieAdapter
@@ -24,43 +24,40 @@ class MainActivity : AppCompatActivity() {
         b = ActivityMainBinding.inflate(layoutInflater)
         setContentView(b.root)
 
-        // 1) Dùng toolbar làm action bar
+        // 1) Setup toolbar as action bar
         setSupportActionBar(b.topAppBar)
         supportActionBar?.title = "Movie Catalog"
 
-        b.topAppBar.menu.clear()
-        b.topAppBar.inflateMenu(R.menu.menu_main)
-        b.topAppBar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_list -> { b.rvMovies.layoutManager =
-                    GridLayoutManager(this, resources.getInteger(R.integer.span_list)); true }
-                R.id.action_grid -> { b.rvMovies.layoutManager =
-                    GridLayoutManager(this, resources.getInteger(R.integer.span_grid)); true }
-                else -> false
-            }
-        }
-
-        // 2) Inflate menu BẰNG CODE (tránh lỗi ID 0)
-        b.topAppBar.menu.clear()
-        b.topAppBar.inflateMenu(R.menu.menu_main)
-
-        // 3) RecyclerView
+        // 2) Setup RecyclerView
         b.rvMovies.setHasFixedSize(true)
         b.rvMovies.layoutManager = GridLayoutManager(this, spanList)
         b.rvMovies.adapter = adapter
 
-        // 4) Nạp data
+        // 3) Load data
         val data = MovieRepository.getMovies()
         adapter.submit(data)
-        Log.d("MovieCatalog", "Items loaded: ${data.size}")
+        Log.d("MovieCatalog", "Items loaded: ${data.size}, spanList: $spanList, spanGrid: $spanGrid")
+    }
 
-        // 5) Switch layout
-        b.topAppBar.setOnMenuItemClickListener { mi ->
-            when (mi.itemId) {
-                R.id.action_list -> { b.rvMovies.layoutManager = GridLayoutManager(this, spanList); true }
-                R.id.action_grid -> { b.rvMovies.layoutManager = GridLayoutManager(this, spanGrid); true }
-                else -> false
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        Log.d("MovieCatalog", "Menu created")
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_list -> {
+                b.rvMovies.layoutManager = GridLayoutManager(this, spanList)
+                Log.d("MovieCatalog", "Switched to List View (span: $spanList)")
+                true
             }
+            R.id.action_grid -> {
+                b.rvMovies.layoutManager = GridLayoutManager(this, spanGrid)
+                Log.d("MovieCatalog", "Switched to Grid View (span: $spanGrid)")
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

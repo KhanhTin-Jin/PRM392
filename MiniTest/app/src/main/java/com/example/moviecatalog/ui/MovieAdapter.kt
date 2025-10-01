@@ -31,8 +31,10 @@ class MovieAdapter(
 
         Glide.with(h.b.imgPoster)
             .load(item.posterUrl)
-            .placeholder(R.drawable.ic_movie_24) // vector placeholder
+            .placeholder(R.drawable.ic_movie_24)
             .error(R.drawable.ic_movie_24)
+            .timeout(60000) // 60 seconds timeout
+            .centerCrop()
             .into(h.b.imgPoster)
 
         h.b.root.setOnClickListener {
