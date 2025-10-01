@@ -1,0 +1,11 @@
+<resources>
+    <dimen name="screen_padding">12dp</dimen>
+    <dimen name="card_padding">8dp</dimen>
+    <dimen name="poster_height">180dp</dimen>
+
+    <dimen name="title_text">16sp</dimen>
+    <dimen name="subtitle_text">13sp</dimen>
+
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_8">8dp</dimen>
+</resources>

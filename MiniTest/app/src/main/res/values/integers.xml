@@ -1,0 +1,4 @@
+<resources>
+    <integer name="span_list">1</integer>
+    <integer name="span_grid">2</integer>
+</resources>
